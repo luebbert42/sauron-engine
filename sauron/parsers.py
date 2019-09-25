@@ -56,8 +56,10 @@ class DefaultParser:
 
 class RuleEngineParser(DefaultParser):
     single_model: Type[JobModel] = JobModel
+
     def __init__(self):
         self.yaml = YAML(typ="safe")
+
     def _parse_jobs_from_string(self, jobs_input: str) -> List[JobModel]:
         """
         Method that know how to parse a list for jobs described by a
@@ -71,6 +73,16 @@ class RuleEngineParser(DefaultParser):
         else:
             return self._parse_jobs_from_list(jobs)
 
+    def _parse_jobs_from_dict(self, jobs_input) -> List[JobModel]:
+        """
+        Method that know how to parse a list for jobs
+        """
+        return self._parse_jobs_from_list(
+            []
+            + jobs_input.get("conditions", [])
+            + jobs_input.get("actions", [])
+        )
+
     def parse(self, jobs_input: Union[List, str]) -> List[JobModel]:
         """
         Main method called to parse any jobs
@@ -79,8 +91,9 @@ class RuleEngineParser(DefaultParser):
         if isinstance(jobs_input, str):
             jobs_list_data = self._parse_jobs_from_string(jobs_input)
         elif isinstance(jobs_input, list):
-            # jobs_input is a python list
             jobs_list_data = self._parse_jobs_from_list(jobs_input)
+        elif isinstance(jobs_input, dict):
+            jobs_list_data = self._parse_jobs_from_dict(jobs_input)
         else:
             raise ValueError("jobs param must be a list or json-string")
         return jobs_list_data
