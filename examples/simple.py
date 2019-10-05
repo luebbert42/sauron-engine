@@ -37,7 +37,7 @@ rule = {
     "conditions": [
         {
             "name": "first_condition",
-            "args": {"lower_number": 3, "greater_number": 10},
+            "args": {"lower_number": 13, "greater_number": 10},
         }
     ],
     "actions": [
