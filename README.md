@@ -79,7 +79,8 @@ def print_the_equation(
     print(f"{lower_number} < {greater_number}")
 
 
-rule = {
+rule = """
+    {
     "conditions": [
         {
             "name": "first_condition",
@@ -93,6 +94,7 @@ rule = {
         }
     ],
 }
+"""
 
 
 engine.run(rule)
